@@ -1,0 +1,182 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>تمريني</title>
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#0f172a">
+<link rel="icon" href="icon.svg">
+<link rel="apple-touch-icon" href="icon.svg">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<style>
+*{box-sizing:border-box}
+body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",Tahoma,sans-serif;background:#0f172a;color:#e5e7eb;padding-bottom:40px}
+header{position:sticky;top:0;background:#0f172a;padding:12px 12px 8px;z-index:5;border-bottom:1px solid #1f2937}
+h1{font-size:20px;margin:0 0 8px}#who{font-size:14px;color:#9ca3af}
+nav{display:flex;gap:6px}
+nav button{flex:1;padding:9px 4px;border:0;border-radius:10px;background:#1f2937;color:#e5e7eb;font-size:14px}
+nav button.on{background:#22c55e;color:#052e16;font-weight:700}
+main{padding:12px;max-width:640px;margin:auto}
+.days{display:flex;gap:8px;margin-bottom:8px}
+.days button{flex:1;padding:12px;font-size:18px;font-weight:700;border:0;border-radius:12px;background:#1f2937;color:#e5e7eb}
+.days button.on{background:#22c55e;color:#052e16}
+.info{color:#9ca3af;margin:4px 0 10px;font-size:14px}
+.card{background:#111827;border:1px solid #1f2937;border-radius:14px;padding:12px;margin-bottom:10px}
+.ttl{font-weight:700;margin-bottom:8px}
+.hd{display:flex;justify-content:space-between;align-items:center;gap:8px;cursor:pointer}
+.hd b,.hl b{direction:ltr;unicode-bidi:isolate}
+.sub{color:#9ca3af;font-size:13px;margin-top:3px}
+.arr{font-size:20px;color:#9ca3af}
+.tag{background:#f59e0b;color:#111;border-radius:6px;padding:1px 6px;font-size:11px}
+.opts{margin:10px 0;display:flex;flex-direction:column;gap:6px}
+.opt{display:flex;align-items:center;gap:8px;background:#1f2937;border-radius:10px;padding:8px;font-size:13px}
+.opt span{flex:1}.opt.on{outline:2px solid #22c55e}
+a{color:#38bdf8;text-decoration:none;white-space:nowrap}
+.opt button,.sm{border:0;border-radius:8px;padding:7px 10px;background:#374151;color:#e5e7eb;font-size:13px}
+.set{display:flex;align-items:center;gap:8px;margin-top:8px}
+.set .n{width:20px;color:#9ca3af}
+.set input{flex:1;min-width:0;padding:10px;font-size:16px;border-radius:10px;border:1px solid #374151;background:#0b1220;color:#fff;text-align:center}
+.row{display:flex;gap:8px;margin-top:8px}
+.wr{display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:6px 0;border-bottom:1px solid #1f2937}
+.wr span{flex:1}.wr input{width:20px;height:20px}.alt{font-size:12px}
+.big{width:100%;padding:14px;font-size:17px;font-weight:700;border:0;border-radius:14px;background:#22c55e;color:#052e16;margin-top:6px}
+.ghost{width:100%;padding:11px;margin-top:8px;border:1px solid #374151;border-radius:12px;background:transparent;color:#9ca3af}
+.danger{color:#f87171;border-color:#7f1d1d}
+.hl{padding:8px 0;border-bottom:1px solid #1f2937}
+select,.full{width:100%;padding:11px;font-size:16px;border-radius:10px;background:#111827;color:#fff;border:1px solid #374151;margin-bottom:10px}
+.ch{width:100%;direction:ltr}.ch text{fill:#e5e7eb;font-size:11px}
+.empty{text-align:center;color:#9ca3af;padding:40px 0}.center{text-align:center}
+.filebtn{display:inline-block;margin-inline-start:8px}
+</style>
+</head>
+<body>
+<header>
+<h1>تمريني 💪 <span id="who"></span></h1>
+<nav>
+<button data-t="train" onclick="go('train')">التمرين</button>
+<button data-t="hist" onclick="go('hist')">السجل</button>
+<button data-t="prog" onclick="go('prog')">البروجرس</button>
+<button data-t="set" onclick="go('set')">الإعدادات</button>
+</nav>
+</header>
+<main id="app"></main>
+<script>
+const L=s=>s.startsWith('f:')?'https://drive.google.com/file/d/'+s.slice(2)+'/view':'https://drive.google.com/open?id='+s;
+const WARM=[
+["Arm Circles","10-15","16P4UGyepWsqvpGsLU2Q6QXHwLi6RhXP4",[["Arm Swing","1pp9SQ9DHjGVjwF4Q-MVJ0yRb9aJmtEAU"]]],
+["Leg Swings","10-15","1qFntshqyO80sWKyXMVZZalHh7lDOjItV",[["Leg Circles","12N03hF9sp5DLIjJ1ivQffWEIOKQ5E0-7"]]],
+["Hip Circles","10-15","18WQ1MOTMGEJBduKr3-Sv3cyXuzsIZpQ1",[["Leg Abduction","1YwTqXpTvCIyd0vB4o8WlCOxCsPSKlmfk"]]]
+];
+const PLAN={
+A:[
+["Leg Press Machine","3 x 8-12","1lqTvMOb-ZM0hvQMPuDWWiDdcAdWAPeCZ",[["Leg Press Quads Bias","1njCrrB8qUl_ksAeJ53aTvXS3l7l-vqKa"],["Leg Extension Machine","1OraH9cyWpq1oFUghnO25gR_RTlYLGbws"]]],
+["Chest Press Machine","3 x 8-12","1acFCgI2GC9KKbxXGuEEfFfYgVkUWc37O",[["Flat Dumbbell Press","1Ehxpq2p4UXp6-tgRDD70fEBOsAuugYWy"],["Flat Smith Machine Press","1puB5PtN1G-03ofTR8_S65iGarFqYmQT0"]]],
+["Chest Supported Dumbbell Row","3 x 8-12","1vZr3Bscydar1wVIcQ-7MpmIVk8Ukz0Y8",[["Hammer Strength Row Machine","17mu8I0ukJaSc1rUVHtk8ITxqMTxyUw6-"],["Upper Back Row Machine","1FlQ9K0OmLWLJlgA1bxKUsdQKY7_Wsltz"]]],
+["Lying Leg Curl","3 x 10-12","111_awQ-Uw4ziia5lJwNrB_Nv6015zTe4",[["Seated Leg Curl Full Movement","1Cjvr1S5JaWJDjU3m2sfy4tGrWO0xGcTu"],["Standing Leg Curl","1yPYNmrloxewdAUt0g3e4BUGqHgiv3JYZ"]]],
+["Cable Lateral Raise H-Hip","3 x 12-15","1jOpHf_3qwDv92ZpGVS-gIwqHJ3UdSyF-",[["Chest Supported Dumbbell Lateral Raise","1L-voChwXgARdZOS3ariL7PHjQDdPCuoj"],["Cable Lateral Raise H-Knee","14ixWsPHS0xS42lnAs7HZvdIsh71E0ul9"]]],
+["Seated Calf Raise Machine","3 x 12-15","1jyKdJJ1f7VWCGOjexu4xI3GOvt4RJAiW",[["Horizontal Calf Raise","1cK3AkZfNN2dJ-dKFHCl5hA7FfFeUoeWI"],["Plate Seated Calf Raise","f:1VZ3HBJSUpJtU5zgm5mzvp9yqGpPh9lWN"]]],
+["Plank","3 x 30-45s","1V3dapYUcGsNbkNnjc0rJ1uMWSYzl49qm",[["Side Plank","1FGoKZ3XGoMbWHy2VtAl7HKfCfxFfRQsj"],["Bird Dog","1z7bZYJfQLtTP6l1o_y5FRKgR78mNVjK-"]]]
+],
+B:[
+["Leg Press Quads Bias","3 x 8-12","1njCrrB8qUl_ksAeJ53aTvXS3l7l-vqKa",[["Leg Press Machine","1lqTvMOb-ZM0hvQMPuDWWiDdcAdWAPeCZ"],["Goblet Squat Heel Elevated (خفيف)","1bPid4Tx4-23vwSkoZHHlq6BkvxzW8Mg4"]]],
+["Neutral Grip Shoulder Press Machine","3 x 8-12","1MZtKVNbi1QCMWziChJZ7toNMBbZcyiks",[["60-Degree Incline Smith Press","1B6jc8cgvUYiMAav58h9xmJXhURYDxtVK"],["Front Delt Cable Press","1eSWbDye9gAEOZgvW_IED0mV_g0TW-0-N"]]],
+["Neutral Grip Cable Lat Pulldown","3 x 8-12","1mvyGjkIQoHBrXLT3GriuSlQCJEXLwZS8",[["SA Cable Lat Pulldown","1E-U8ifBPnAf6tRe1PESrs9cuPw8sD6W6"],["Single Arm Reverse Lat Pulldown Machine","1qeeZGZzdIa0adTGDe6PC7fp028MNIkRh"]]],
+["Leg Extension Machine","3 x 12-15","1OraH9cyWpq1oFUghnO25gR_RTlYLGbws",[["Sissy Squat","1Lunvgn1yEgQKOH64VedCPx6K3Tuslggd"],["Band Leg Extension","1NzhfaeghEIm9zgiwGp10ic4jpCRJZpnY"]]],
+["Seated Leg Curl Full Movement","3 x 10-12","1Cjvr1S5JaWJDjU3m2sfy4tGrWO0xGcTu",[["Lying Leg Curl","111_awQ-Uw4ziia5lJwNrB_Nv6015zTe4"],["15-Degree Knee Flexion Seated Leg Curl","1QNAwRranJo-ngYQZi3sLXUC4XDh1yBvZ"]]],
+["Incline Dumbbell Curl","2 x 10-12","1-ruzuQhHt4a6RHi48UflIXtFq8VDnBin",[["Dumbbell Spider Curl","1RQp35vJ6m-vxZeWokss7ocOKp1Tjo1jt"],["Preacher Curl Machine","1qftRoPStmK4zV1Sg3Ik-XlQFae4-3GYT"]]],
+["V-Bar Triceps Extension","2 x 10-12","f:19OOldpw-o1rLMKNFWdHk0rw0Wrun5ELH",[["Straight-Bar Triceps Extension","1MCTXuRGDy9N49dTX_IeOt2yKo7J3DgkS"],["Cross Cable Triceps Extension","16w4I6FNlKgU5hMpeN8gdsMTxRS3WlKCX"]]]
+],
+C:[
+["Leg Press Machine Glutes Bias","3 x 10-12","1ShrExlRsvhMwUO7gOjhnbhQQv2rPoJEU",[["Glutes Kickback Machine","1LlW6LpZBLvteVJT6r8y5I8EWTJL7-L8o"],["Glutes Max Cable Kickback","1hhuSmW58ItVaihVygBiatHUuV8JAHhud"]]],
+["Seated Hip Abduction Machine","3 x 12-15","1UlS34hZVbQTh04QjYFYL3Xe99mRZ41Ny",[["Standing Cable Hip Abduction","1txiUapW_VfzDuPGOlGzIMEnlr53veAQF"],["Band Hip Abduction","113JmgYwPl2XEws5d7nSjOrfjpakJbVoy"]]],
+["Incline Press Machine","3 x 8-12","1GqL6CALlrSalkbYDAuBFoSpgPvqXUGul",[["30-Degree Incline Dumbbell Press","1AMLNVijWU79qPvMEI9tzHgjk_95od_dc"],["30-Degree Incline Smith Press","1YPawFVOX7QWnQDMZC1XbTdAbihmzBJVI"]]],
+["T-Bar Row Machine","3 x 10-12","1oHz6FxLyZyJV-4at9yMMowmgYu5e_kTy",[["Upper Back Row Machine","1FlQ9K0OmLWLJlgA1bxKUsdQKY7_Wsltz"],["Hammer Strength Row Machine","17mu8I0ukJaSc1rUVHtk8ITxqMTxyUw6-"]]],
+["Prone Dumbbell Rear Delt Fly","3 x 12-15","1h4DH2gJR2boyJyZqmAEoOOdjiKhmpBtS",[["Seated Rear Delt Row Machine","1paGfZCzX0jjXIw4t8eCFlKUFV6G6pbbq"],["Cross-Cable Rear Delt Fly","1v73bEhAM4GP66Af6xZcpW042fYHqBi2g"]]],
+["Dumbbell Hammer Curl","2 x 10-12","1AWUAk2gAr-Naw64IbEalZiRUFBMSFNGF",[["Rope Cable Hammer Curl","162vKJhFck8VQfeZT5khDAqjrK3cBEs68"],["Incline Dumbbell Hammer Curl","114hG7fPb3crfdB2Kz_dZGehXyuDYBQhQ"]]],
+["Dual-Rope OHT extension","2 x 10-12","1aV8A7UV9tLjip8E7g5iP1gTconhWcRzC",[["Cross-Cable OHT extension","1wnwMehc1s7lAnt4RmO0upnlqnuQRygn9"],["Dumbbell Skull Crusher","1PLaWAmCtwIc1Ft8T4r-t3jTWEnXDs10h"]]],
+["Dead Bug","3 x 10 / side","1Mz6EQV5JabysoPBhcrQKMsQNU-cE9quz",[["Bird Dog","1z7bZYJfQLtTP6l1o_y5FRKgR78mNVjK-"],["Cable Pallof Press","1ZuHTdzJW0CkYt8GRwm_YZtIx-z7W1NQX"]]]
+],
+D:[
+["Flat Dumbbell Press","3 x 8-12","1Ehxpq2p4UXp6-tgRDD70fEBOsAuugYWy",[["Chest Press Machine","1acFCgI2GC9KKbxXGuEEfFfYgVkUWc37O"],["Flat Smith Machine Press","1puB5PtN1G-03ofTR8_S65iGarFqYmQT0"]]],
+["Upper Back Pulldown","3 x 10-12","1z89sBvii0C8Vu7uq_Ikn4x-XN1Gjv6it",[["Neutral Grip Cable Lat Pulldown","1mvyGjkIQoHBrXLT3GriuSlQCJEXLwZS8"],["SA Cable Lat Pulldown","1E-U8ifBPnAf6tRe1PESrs9cuPw8sD6W6"]]],
+["Hammer Strength Row Machine","3 x 8-12","17mu8I0ukJaSc1rUVHtk8ITxqMTxyUw6-",[["Single Arm Iso Lumbar Row Machine","1X13vR_hESAyhkaRCnrCHoSmuI5U7oKW7"],["Chest Supported Dumbbell Row","1vZr3Bscydar1wVIcQ-7MpmIVk8Ukz0Y8"]]],
+["Chest Fly Machine","3 x 12-15","1mV6Cdtu1HyKXpL-TJbkHMrsGzVBvgF85",[["Sternal Cable Fly","1pc0PbR-PEa6RWi34NwZWtObz8-rDjVPC"],["Flat Dumbbell Fly","1tBof20VSbMpV0QLpSwOvRLV0BtR18GdF"]]],
+["Cable Lateral Raise Behind Torso","3 x 12-15","1wkz_de-tcv_sTSjfW6WYO4btF7YEGkAr",[["Chest Supported Dumbbell Lateral Raise","1L-voChwXgARdZOS3ariL7PHjQDdPCuoj"],["Cable Lateral Raise H-Wrist","1eFX6bvUgPWgmO9TJT_XmQPDktSoCM0dX"]]],
+["Cross-Cable Rear Delt Fly","3 x 12-15","1v73bEhAM4GP66Af6xZcpW042fYHqBi2g",[["Seated Rear Delt Row Machine","1paGfZCzX0jjXIw4t8eCFlKUFV6G6pbbq"],["Prone Dumbbell Rear Delt Fly","1h4DH2gJR2boyJyZqmAEoOOdjiKhmpBtS"]]],
+["Preacher Curl Machine","3 x 10-12","1qftRoPStmK4zV1Sg3Ik-XlQFae4-3GYT",[["EZ-Bar Preacher Curl","1zLFhX9WNe1mIxmArJPv2VmFUYt0N2kBc"],["Dumbbell Preacher Curl","1A3EmcVF4-ufZ6ikAEC0S1ZACNH6Rxp8G"]]],
+["Dips Machine","3 x 10-12","16a_CTM89Uk30zF3Fz6Lw-NME-m2EyibO",[["Cross-Body Triceps Extension","1aI2MSs9nU-r0qbf72iuQWk8Ild19qMb9"],["SA Cable Triceps Extension","1VjyLRzeog3Mw2o9ikZOZDMRbqW1jFVNj"]]]
+]};
+const DAYN={A:'يوم A · Legs + Push/Pull',B:'يوم B · Legs + Vertical',C:'يوم C · Glutes + Upper',D:'يوم D · Upper'};
+const S={get(k,d){try{const v=localStorage.getItem(k);return v?JSON.parse(v):d}catch(e){return d}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){alert('مش قادر أحفظ على الجهاز ده')}}};
+let sessions=S.get('ft_sessions',[]),tab='train',day=S.get('ft_day','A'),open={},openH={},prog=null;
+if(!PLAN[day])day='A';
+const $=id=>document.getElementById(id);
+const esc=s=>String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+function nSets(t){const m=/^(\d+)/.exec(t);return m?+m[1]:3}
+function today(){const d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')}
+function weekNo(ds){const st=S.get('ft_start',null);if(!st)return 1;return Math.max(1,Math.floor((new Date(ds)-new Date(st))/6048e5)+1)}
+function newDraft(d){return{day:d,warm:WARM.map(()=>false),ex:PLAN[d].map(e=>({key:e[0],used:e[0],sets:Array.from({length:nSets(e[1])},()=>({w:'',r:''}))}))}}
+function getDraft(){let dr=S.get('ft_draft_'+day,null);if(!dr||!dr.ex||dr.ex.length!==PLAN[day].length||dr.ex.some((x,i)=>x.key!==PLAN[day][i][0]))dr=newDraft(day);return dr}
+let draft=getDraft();
+function saveDraft(){S.set('ft_draft_'+day,draft)}
+function lastFor(n){for(let i=sessions.length-1;i>=0;i--){const e=sessions[i].ex.find(x=>x.used===n&&x.sets.length);if(e)return e.sets}return null}
+function fmt(a){return a.map(s=>(s.w||'-')+'×'+(s.r||'-')).join('   ')}
+function go(t){tab=t;render();scrollTo(0,0)}
+function render(){
+document.querySelectorAll('nav button').forEach(b=>b.classList.toggle('on',b.dataset.t===tab));
+const nm=S.get('ft_name','');$('who').textContent=nm?'· '+nm:'';
+$('app').innerHTML=tab==='train'?vTrain():tab==='hist'?vHist():tab==='prog'?vProg():vSet()}
+function vTrain(){
+let h='<div class="days">'+Object.keys(PLAN).map(d=>`<button class="${d===day?'on':''}" onclick="setDay('${d}')">${d}</button>`).join('')+'</div>';
+h+=`<div class="info">${DAYN[day]} — الأسبوع ${weekNo(today())}</div>`;
+h+='<div class="card"><div class="ttl">🔥 التسخين</div>'+WARM.map((w,i)=>`<label class="wr"><input type="checkbox" ${draft.warm[i]?'checked':''} onchange="wchk(${i},this.checked)"><span>${w[0]} <small>${w[1]}</small></span><a href="${L(w[2])}" target="_blank">▶ فيديو</a>${w[3].map(a=>`<a class="alt" href="${L(a[1])}" target="_blank">بديل: ${a[0]} ▶</a>`).join('')}</label>`).join('')+'</div>';
+PLAN[day].forEach((e,i)=>{const dr=draft.ex[i],opts=[[e[0],e[2]],...e[3]],last=lastFor(dr.used);
+h+=`<div class="card"><div class="hd" onclick="tog(${i})"><div><b>${esc(dr.used)}</b>${dr.used!==e[0]?' <span class="tag">بديل</span>':''}<div class="sub">${e[1]}${last?' · آخر مرة: '+esc(fmt(last)):''}</div></div><span class="arr">${open[i]?'▴':'▾'}</span></div>`;
+if(open[i])h+='<div class="opts">'+opts.map((o,j)=>`<div class="opt ${o[0]===dr.used?'on':''}"><span>${j?'بديل '+j+': ':'الأساسي: '}${esc(o[0])}</span><a href="${L(o[1])}" target="_blank">▶ فيديو</a><button onclick="pick(${i},${j})">${o[0]===dr.used?'✓':'استخدم'}</button></div>`).join('')+'</div>';
+h+=dr.sets.map((s,k)=>`<div class="set"><span class="n">${k+1}</span><input inputmode="decimal" placeholder="${last&&last[k]?esc(last[k].w):'كجم'}" value="${esc(s.w)}" oninput="upd(${i},${k},'w',this.value)"><span>×</span><input inputmode="numeric" placeholder="${last&&last[k]?esc(last[k].r):'عدات'}" value="${esc(s.r)}" oninput="upd(${i},${k},'r',this.value)"></div>`).join('');
+h+=`<div class="row"><button class="sm" onclick="addSet(${i},1)">+ سيت</button><button class="sm" onclick="addSet(${i},-1)">− سيت</button></div></div>`});
+return h+'<button class="big" onclick="finish()">✅ خلّصت التمرين، احفظ</button><button class="ghost" onclick="clearDraft()">مسح اللي متكتب</button>'}
+function setDay(d){day=d;S.set('ft_day',d);draft=getDraft();open={};render()}
+function tog(i){open[i]=!open[i];render()}
+function pick(i,j){const e=PLAN[day][i];draft.ex[i].used=j?e[3][j-1][0]:e[0];saveDraft();render()}
+function upd(i,k,f,v){draft.ex[i].sets[k][f]=v.trim();saveDraft()}
+function wchk(i,v){draft.warm[i]=v;saveDraft()}
+function addSet(i,d){const s=draft.ex[i].sets;if(d>0)s.push({w:'',r:''});else if(s.length>1)s.pop();saveDraft();render()}
+function clearDraft(){if(confirm('تمسح كل اللي كتبته في اليوم ده؟')){draft=newDraft(day);saveDraft();render()}}
+function finish(){
+const ex=draft.ex.map(x=>({key:x.key,used:x.used,sets:x.sets.filter(s=>s.w!==''||s.r!=='')})).filter(x=>x.sets.length);
+if(!ex.length){alert('مكتبتش ولا سيت لسه');return}
+if(!confirm('أحفظ تمرين يوم '+day+'؟'))return;
+const date=today();if(!S.get('ft_start',null))S.set('ft_start',date);
+sessions.push({id:Date.now(),date,day,week:weekNo(date),warm:draft.warm.filter(Boolean).length,ex});
+S.set('ft_sessions',sessions);draft=newDraft(day);S.set('ft_draft_'+day,null);open={};go('hist')}
+function vHist(){
+if(!sessions.length)return '<div class="empty">لسه مفيش تمارين متسجلة</div>';
+return [...sessions].reverse().map(s=>`<div class="card"><div class="hd" onclick="togH(${s.id})"><div><b>يوم ${s.day}</b> · الأسبوع ${s.week}<div class="sub">${s.date} · ${s.ex.length} تمارين</div></div><span class="arr">${openH[s.id]?'▴':'▾'}</span></div>${openH[s.id]?s.ex.map(x=>`<div class="hl"><b>${esc(x.used)}</b><div class="sub">${esc(fmt(x.sets))}</div></div>`).join('')+`<button class="ghost danger" onclick="del(${s.id})">🗑 امسح التمرينة دي</button>`:''}</div>`).join('')}
+function togH(id){openH[id]=!openH[id];render()}
+function del(id){if(confirm('متأكد؟')){sessions=sessions.filter(s=>s.id!==id);S.set('ft_sessions',sessions);render()}}
+function chart(v){
+if(v.length<2)return '<div class="card sub center">الجراف بيظهر بعد ما تسجل التمرين ده مرتين</div>';
+const W=320,H=150,p=22,mx=Math.max(...v),mn=Math.min(...v),rg=mx-mn||1;
+const pts=v.map((y,i)=>[p+i*(W-2*p)/(v.length-1),H-p-(y-mn)/rg*(H-2*p)]);
+return `<div class="card"><div class="ttl">أعلى وزن كل مرة</div><svg class="ch" viewBox="0 0 ${W} ${H}"><polyline fill="none" stroke="#22c55e" stroke-width="3" points="${pts.map(q=>q.join(',')).join(' ')}"/>${pts.map((q,i)=>`<circle cx="${q[0]}" cy="${q[1]}" r="4" fill="#22c55e"/><text x="${q[0]}" y="${q[1]-9}" text-anchor="middle">${v[i]}</text>`).join('')}</svg></div>`}
+function vProg(){
+const names=[...new Set(sessions.flatMap(s=>s.ex.map(x=>x.used)))];
+if(!names.length)return '<div class="empty">سجّل تمرين الأول عشان يظهر البروجرس</div>';
+if(!prog||!names.includes(prog))prog=names[0];
+const rows=sessions.filter(s=>s.ex.some(x=>x.used===prog)).map(s=>{const x=s.ex.find(x=>x.used===prog);const n=t=>parseFloat(t)||0;return{date:s.date,week:s.week,sets:x.sets,best:Math.max(...x.sets.map(t=>n(t.w))),reps:x.sets.reduce((a,t)=>a+n(t.r),0),vol:x.sets.reduce((a,t)=>a+n(t.w)*n(t.r),0)}});
+return '<select onchange="prog=this.value;render()">'+names.map(n=>`<option ${n===prog?'selected':''}>${esc(n)}</option>`).join('')+'</select>'+chart(rows.map(r=>r.best))+
+'<div class="card">'+rows.slice().reverse().map(r=>`<div class="hl"><b>${r.date}</b> · الأسبوع ${r.week}<div class="sub">${esc(fmt(r.sets))}</div><div class="sub">أعلى وزن: ${r.best} · مجموع العدات: ${r.reps} · الحجم: ${Math.round(r.vol)}</div></div>`).join('')+'</div>'}
+function vSet(){
+return `<div class="card"><div class="ttl">اسمك</div><input class="full" value="${esc(S.get('ft_name',''))}" oninput="S.set('ft_name',this.value.trim())" onchange="render()" placeholder="اكتب اسمك"></div>
+<div class="card"><div class="ttl">💾 نسخة احتياطية</div><div class="sub">البيانات متخزنة على الموبايل ده بس. نزّل نسخة كل فترة، عشان لو اتمسحت بيانات المتصفح تقدر ترجعها.</div><div class="row"><button class="sm" onclick="exp()">تنزيل نسخة</button><label class="sm filebtn">استرجاع نسخة<input type="file" accept=".json,application/json" onchange="imp(this.files[0])" hidden></label></div></div>
+<div class="card"><div class="ttl">⚠️ بداية جديدة</div><button class="ghost danger" onclick="resetAll()">امسح كل البيانات</button></div>`}
+function exp(){const b=new Blob([JSON.stringify({app:'tamreeni',v:1,name:S.get('ft_name',''),start:S.get('ft_start',null),sessions})],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='tamreeni-'+today()+'.json';document.body.appendChild(a);a.click();a.remove()}
+function imp(f){if(!f)return;const r=new FileReader();r.onload=()=>{try{const d=JSON.parse(r.result);if(!Array.isArray(d.sessions))throw 0;if(!confirm('السجل الحالي هيتبدّل بالنسخة دي، موافق؟'))return;sessions=d.sessions;S.set('ft_sessions',sessions);S.set('ft_start',d.start||null);if(d.name)S.set('ft_name',d.name);alert('تم الاسترجاع ✅');render()}catch(e){alert('الملف ده مش نسخة صحيحة')}};r.readAsText(f)}
+function resetAll(){if(confirm('هتمسح كل التمارين والبروجرس. متأكد؟')&&confirm('آخر تأكيد؟')){['ft_sessions','ft_start','ft_draft_A','ft_draft_B','ft_draft_C','ft_draft_D'].forEach(k=>{try{localStorage.removeItem(k)}catch(e){}});sessions=[];draft=newDraft(day);render()}}
+render();
+if('serviceWorker' in navigator)navigator.serviceWorker.register('sw.js').catch(()=>{});
+</script>
+</body>
+</html>
